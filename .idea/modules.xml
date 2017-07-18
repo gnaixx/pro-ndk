@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/echo/Echo.iml" filepath="$PROJECT_DIR$/echo/Echo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/threads/Threads.iml" filepath="$PROJECT_DIR$/threads/Threads.iml" />
+      <module fileurl="file://$PROJECT_DIR$/prondk.iml" filepath="$PROJECT_DIR$/prondk.iml" />
+    </modules>
+  </component>
+</project>

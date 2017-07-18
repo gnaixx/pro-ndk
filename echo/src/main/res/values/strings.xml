@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Echo</string>
+    <string name="title_server">Echo Server</string>
+    <string name="edit_port">Port Number</string>
+    <string name="btn_start_tcp_server">Start TCP Server</string>
+    <string name="btn_start_udp_server">Start UDP Server</string>
+
+    <string name="title_client">Echo Client</string>
+    <string name="edit_ip">IP Address</string>
+    <string name="btn_start_client_tcp">Start TCP Client</string>
+    <string name="btn_start_client_udp">Start UDP Client</string>
+    <string name="btn_send">Send</string>
+    <string name="edit_msg">Message</string>
+
+    <string name="title_local">Local Echo</string>
+    <string name="edit_port_local">Port Name</string>
+
+</resources>
