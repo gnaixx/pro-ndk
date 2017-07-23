@@ -1,1 +1,1 @@
-include ':Threads', ':Echo'
+include ':Threads', ':Echo', ':AviPlayer'

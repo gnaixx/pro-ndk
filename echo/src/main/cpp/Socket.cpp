@@ -125,19 +125,19 @@ static ssize_t sendToSocket(JNIEnv *env, jobject obj, int sd, char *buffer, size
     return sendSize;
 }
 
-static void connectToAddress(JNIEnv* env, jobject obj, int sd, const char* ip, unsigned short port){
+static void connectToAddress(JNIEnv *env, jobject obj, int sd, const char *ip, unsigned short port) {
     logMessage(env, obj, "Connecting to %s:%hu...", ip, port);
     struct sockaddr_in address;
     memset(&address, 0, sizeof(address));
     address.sin_family = PF_INET;
     //将 ip 转化为网络地址
-    if(inet_aton(ip, &(address.sin_addr)) == 0){
-         throwErrnoException(env, IOEXCEPTION, errno);
-    }else{
+    if (inet_aton(ip, &(address.sin_addr)) == 0) {
+        throwErrnoException(env, IOEXCEPTION, errno);
+    } else {
         address.sin_port = htons(port);
-        if(connect(sd, (const sockaddr*) &address, sizeof(address)) == -1){
+        if (connect(sd, (const sockaddr *) &address, sizeof(address)) == -1) {
             throwErrnoException(env, IOEXCEPTION, errno);
-        }else{
+        } else {
             logMessage(env, obj, "Connected.");
         }
     }
@@ -187,7 +187,57 @@ static ssize_t sendDatagramToSocket(JNIEnv *env, jobject obj, int sd, const stru
     return sendSize;
 }
 
+//############################ LOCAL ############################
+static int newLocalSocket(JNIEnv *env, jobject obj) {
+    logMessage(env, obj, "Constructing a new Local UNIx socket...");
+    int localSockaet = socket(PF_LOCAL, SOCK_STREAM, 0);
+    if (localSockaet == -1) {
+        throwErrnoException(env, IOEXCEPTION, errno);
+    }
+    return localSockaet;
+}
 
+static void bindLocalSocketToName(JNIEnv *env, jobject obj, int sd, const char *name) {
+    struct sockaddr_un address;
+    const size_t nameLen = strlen(name);
 
+    size_t pathLen = nameLen;
+    bool abstractNamespace = ('/' != name[0]);
 
+    if (abstractNamespace) {
+        pathLen++;
+    }
+
+    if (pathLen > sizeof(address.sun_path)) {
+        throwException(env, IOEXCEPTION, "Name is too big.");
+    } else {
+        memset(&address, 0, sizeof(address));
+        address.sun_family = PF_LOCAL;
+
+        char *sunPath = address.sun_path;
+        //第一个字节必须是0 以使用抽象命名空间
+        if (abstractNamespace) {
+            *sunPath++ = NULL;
+        }
+
+        strcpy(sunPath, name);
+        socklen_t addressLen = (offsetof(struct sockaddr_un, sun_path)) + pathLen;
+
+        //如果已经绑定 取消连接
+        unlink(address.sun_path);
+        logMessage(env, obj, "Binding to local name %s%s.", (abstractNamespace) ? "(null)" : "", name);
+        if (bind(sd, (struct sockaddr *) &address, addressLen) == -1) {
+            throwErrnoException(env, IOEXCEPTION, errno);
+        }
+    }
+}
+
+static int acceptOnLocalSocket(JNIEnv *env, jobject obj, int sd) {
+    logMessage(env, obj, "Waiting for a client connection...");
+    int clientSocket = accept(sd, NULL, NULL);
+    if(clientSocket == -1){
+        throwErrnoException(env, IOEXCEPTION, errno);
+    }
+    return clientSocket;
+}
 

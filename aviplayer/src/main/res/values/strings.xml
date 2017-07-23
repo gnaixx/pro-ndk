@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AVI Player</string>
+
+    <string name="file_name_hit">AVI Video File Name</string>
+    <string name="file_name_text">galleon.avi</string>
+    <string name="play_btn">Play</string>
+    <string name="error_alert_title">Error Occurred</string>
+
+    <string name="bitmap_player_radio">Bitmap Player</string>
+    <string name="opengl_player_radio">OpenGL Player</string>
+    <string name="window_player_radio">Window Player</string>
+
+</resources>

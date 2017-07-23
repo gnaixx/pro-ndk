@@ -20,7 +20,8 @@ add_library( # Sets the name of the library.
              src/main/cpp/LogUtil.cpp
              src/main/cpp/Socket.cpp
              src/main/cpp/Server.cpp
-             src/main/cpp/Client.cpp)
+             src/main/cpp/Client.cpp
+             src/main/cpp/Local.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
